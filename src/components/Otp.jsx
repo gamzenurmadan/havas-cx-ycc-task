@@ -24,7 +24,7 @@ export default function Otp({onSubmit}){
             <div className="flex flex-wrap -mx-2">
                 {
                     fields.map((field, index) => (
-                        <div key={index} className="w-full md:w-1/6 px-2">
+                        <div key={index} className="flex-grow w-full px-2 xs:w-1/6">
                             <InputField
                                 handleChange={handleChange}
                                 value={otpState[field.id]}
