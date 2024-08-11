@@ -15,9 +15,13 @@ export default function Login(){
     const [loginState, setLoginState]= useState(fieldsState);
     const navigate = useNavigate();
 
-    const handleChange=(e)=>{
-        setLoginState({...loginState,[e.target.id]:e.target.value})
-    }
+    const handleChange = (e) => {
+        const { id, value } = e.target;
+        setLoginState(prevState => ({
+            ...prevState,
+            [id]: value
+        }));
+    };
 
     const handleSubmit=(e)=>{
         e.preventDefault();

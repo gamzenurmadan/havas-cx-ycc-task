@@ -6,11 +6,24 @@ export default defineConfig({
   server: {
     proxy: {
       "/api": {
-        target: 'http://199.247.17.44:3001',
+        target: "http://199.247.17.44:3001",
         changeOrigin: true,
-        rewrite: path => path.replace(/^\/api/, '')
-      }
-    }
+        secure: false,
+        rewrite: (p) => p.replace(/^\/api/, ""),
+      },
+    },
+    cors: false,
+  },
+  preview: {
+    proxy: {
+      "/api": {
+        target: "http://199.247.17.44:3001",
+        changeOrigin: true,
+        secure: false,
+        rewrite: (p) => p.replace(/^\/api/, ""),
+      },
+    },
+    cors: false,
   },
   plugins: [react()],
 })
