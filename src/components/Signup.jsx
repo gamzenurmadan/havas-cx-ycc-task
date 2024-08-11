@@ -2,6 +2,7 @@ import { useState } from "react";
 import { signupFields } from "../constants/formFields";
 import FormAction from "./FormAction";
 import InputField from "./InputField";
+import { registerUser } from "../api/authApi";
 
 const fields = signupFields;
 let fieldsState = {};
@@ -18,8 +19,12 @@ export default function Signup () {
         createAccount();
     }
 
-    const createAccount=()=>{
-
+    const createAccount= async () => {
+        try{
+            await registerUser(signupState.email, signupState.userName, signupState.password)
+        }catch (error){
+            console.error(error)
+        }
     }
 
     return(

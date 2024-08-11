@@ -22,17 +22,17 @@ const loginFields=[
 const signupFields=[
     {
         labelText:"Username",
-        labelFor:"username",
-        id:"username",
-        name:"username",
+        labelFor:"userName",
+        id:"userName",
+        name:"userName",
         type:"text",
         isRequired:true,
         placeholder:"Username"   
     },
     {
         labelText:"Email address",
-        labelFor:"email-address",
-        id:"email-address",
+        labelFor:"email",
+        id:"email",
         name:"email",
         type:"email",
         isRequired:true,
