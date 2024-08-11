@@ -6,7 +6,7 @@ import { useNavigate } from 'react-router-dom';
 import { authLoginUser } from "../api/authApi";
 
 
-const fields = Array(6).fill(OtpFields);
+const fields = OtpFields;
 let fieldsState = {};
 
 fields.forEach(field => fieldsState[field.id]='');
@@ -54,7 +54,7 @@ export default function Otp(){
                     ))                   
                 }
             </div>
-            <FormAction handleSubmit={handleSubmit} text="Send"/>
+            <FormAction text="Send"/>
         </form>
     )
 }

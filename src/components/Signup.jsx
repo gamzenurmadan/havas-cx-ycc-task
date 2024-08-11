@@ -46,7 +46,7 @@ export default function Signup () {
                         />
                     )
                 }
-                <FormAction handleSubmit={handleSubmit} text="Signup"/>
+                <FormAction text="Signup"/>
             </div>
         </form>
     )
