@@ -4,6 +4,7 @@ import FormAction from "./FormAction";
 import InputField from "./InputField";
 import PropTypes from "prop-types";
 
+
 const fields = Array(6).fill(OtpFields);
 let fieldsState = {};
 
