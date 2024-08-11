@@ -2,7 +2,8 @@ import { useState } from "react";
 import { OtpFields } from "../constants/formFields";
 import FormAction from "./FormAction";
 import InputField from "./InputField";
-import PropTypes from "prop-types";
+import { useHistory } from 'react-router-dom';
+import { authLoginUser } from "../api/authApi";
 
 
 const fields = Array(6).fill(OtpFields);
@@ -10,14 +11,24 @@ let fieldsState = {};
 
 fields.forEach(field => fieldsState[field.id]='');
 
-export default function Otp({onSubmit}){
+export default function Otp(){
     const [otpState, setOtpState] = useState(fieldsState);
+    const history = useHistory();
+
+    const email = localStorage.getItem("email");
+    const password = localStorage.getItem("password");
 
     const handleChange = (e) => setOtpState({...otpState, [e.target.id]:e.target.value});
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        onSubmit(otpState);
+        try{
+            const response = await authLoginUser(email, password, otpState);
+            document.cookie = `token=${response.data.token}; path=/; Secure; HttpOnly`;
+            history.push("/");
+        }catch(error){
+            console.error(error);
+        }
     };
 
     return(
@@ -44,8 +55,4 @@ export default function Otp({onSubmit}){
             <FormAction handleSubmit={handleSubmit} text="Send"/>
         </form>
     )
-}
-
-Otp.propTypes = {
-    onSubmit:PropTypes.any
 }

@@ -3,6 +3,8 @@ import {loginFields} from "../constants/formFields";
 import InputField from "./InputField";
 import FormAction from "./FormAction";
 import FormExtra from "./FormExtra";
+import { useHistory } from "react-router-dom";
+import { loginUser, setCookie } from "../api/authApi";
 
 const fields = loginFields;
 let fieldsState = {};
@@ -11,6 +13,7 @@ fields.forEach(field => fieldsState[field.id]="");
 export default function Login(){
 
     const [loginState, setLoginState]= useState(fieldsState);
+    const history = useHistory();
 
     const handleChange=(e)=>{
         setLoginState({...loginState,[e.target.id]:e.target.value})
@@ -21,8 +24,14 @@ export default function Login(){
         authenticateUser();
     }
 
-    const authenticateUser = () => {
-
+    const authenticateUser = async () => {
+        try {
+            const response = await loginUser(loginState.email, loginState.password);
+            setCookie("token", response.data.token, 7);
+            history.push("otp-validate");
+        }catch (error){
+            console.error(error)
+        }
     }
 
     return(
