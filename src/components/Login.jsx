@@ -3,7 +3,7 @@ import {loginFields} from "../constants/formFields";
 import InputField from "./InputField";
 import FormAction from "./FormAction";
 import FormExtra from "./FormExtra";
-import { useHistory } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { loginUser, setCookie } from "../api/authApi";
 
 const fields = loginFields;
@@ -13,7 +13,7 @@ fields.forEach(field => fieldsState[field.id]="");
 export default function Login(){
 
     const [loginState, setLoginState]= useState(fieldsState);
-    const history = useHistory();
+    const navigate = useNavigate();
 
     const handleChange=(e)=>{
         setLoginState({...loginState,[e.target.id]:e.target.value})
@@ -28,7 +28,9 @@ export default function Login(){
         try {
             const response = await loginUser(loginState.email, loginState.password);
             setCookie("token", response.data.token, 7);
-            history.push("otp-validate");
+            localStorage.setItem("email", loginState.email);
+            localStorage.setItem("password", loginState.password);
+            navigate("/otp-validate");
         }catch (error){
             console.error(error)
         }

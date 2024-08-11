@@ -2,7 +2,7 @@ import { useState } from "react";
 import { OtpFields } from "../constants/formFields";
 import FormAction from "./FormAction";
 import InputField from "./InputField";
-import { useHistory } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { authLoginUser } from "../api/authApi";
 
 
@@ -13,7 +13,7 @@ fields.forEach(field => fieldsState[field.id]='');
 
 export default function Otp(){
     const [otpState, setOtpState] = useState(fieldsState);
-    const history = useHistory();
+    const navigate = useNavigate();
 
     const email = localStorage.getItem("email");
     const password = localStorage.getItem("password");
@@ -22,11 +22,13 @@ export default function Otp(){
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        try{
+        try {
             const response = await authLoginUser(email, password, otpState);
-            document.cookie = `token=${response.data.token}; path=/; Secure; HttpOnly`;
-            history.push("/");
-        }catch(error){
+            if (response.data && response.data.token) {
+                document.cookie = `token=${response.data.token}; path=/; Secure; HttpOnly`;
+                navigate("/login");
+            }
+        } catch (error) {
             console.error(error);
         }
     };

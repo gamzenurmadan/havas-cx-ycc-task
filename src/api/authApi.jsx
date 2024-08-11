@@ -4,7 +4,7 @@ export const registerUser = (email, userName, password) => {
     return axiosInstance.post("/users/register", {email, userName, password});
 };
 
-export const verifyUser = (email, password) => {
+export const loginUser = (email, password) => {
     return axiosInstance.post("/users/verify", {email, password});
 };
 
@@ -12,11 +12,9 @@ export const authLoginUser = (email, password, otp) => {
     return axiosInstance.post("/auth/login", {email, password, otp});
 };
 
-export const getUserData = (token) => {
-    return axiosInstance.post("/auth/data", null, {
-        headers: {Authorization: `Bearer ${token}`}
-    });
-};
+export const checkSession = () => {
+    return axiosInstance.post('/auth/data', {}, { withCredentials: true });
+  };
 
 export const setCookie = (name, value, days) => {
     let expires = "";

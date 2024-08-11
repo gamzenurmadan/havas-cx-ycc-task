@@ -40,7 +40,7 @@ InputField.propTypes = {
     value:PropTypes.string,
     labelText:PropTypes.string,
     labelFor:PropTypes.string,
-    id:PropTypes.number,
+    id:PropTypes.string,
     name: PropTypes.string,
     type: PropTypes.string,
     isRequired: PropTypes.bool,
