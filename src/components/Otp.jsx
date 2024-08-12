@@ -1,35 +1,57 @@
-import { useState } from "react";
 import { OtpFields } from "../constants/formFields";
 import FormAction from "./FormAction";
 import InputField from "./InputField";
 import { useNavigate } from 'react-router-dom';
 import { authLoginUser } from "../api/authApi";
-
+import useFormHandler from "../hooks/useFormHandler";
+import ErrorMessage from "./ErrorMessage";
+import SuccessMessage from "./SuccessMessage";
 
 const fields = OtpFields;
 let fieldsState = {};
 
 fields.forEach(field => fieldsState[field.id]='');
 
-export default function Otp(){
-    const [otpState, setOtpState] = useState(fieldsState);
-    const navigate = useNavigate();
+const validate = (state) => {
+    const errors = {};
+    fields.forEach(field => {
+        if (!state[field.id]) {
+            errors[field.id] = `${field.labelText} is required.`;
+        }
+    });
+    return errors;
+};
 
+export default function Otp(){
+    const {
+        formState,
+        handleChange,
+        handleValidation,
+        errors,
+        setErrors,
+        successMessage,
+        setSuccessMessage
+    } = useFormHandler(fieldsState, validate);
+
+    const navigate = useNavigate();
     const email = localStorage.getItem("email");
     const password = localStorage.getItem("password");
 
-    const handleChange = (e) => setOtpState({...otpState, [e.target.id]:e.target.value});
-
     const handleSubmit = async (e) => {
         e.preventDefault();
-        try {
-            const response = await authLoginUser(email, password, otpState);
-            if (response.data && response.data.token) {
-                document.cookie = `token=${response.data.token}; path=/; Secure; HttpOnly`;
-                navigate("/login");
+        if (handleValidation()) {
+            try {
+                const response = await authLoginUser(email, password, formState);
+                if (response.data && response.data.token) {
+                    document.cookie = `token=${response.data.token}; path=/; Secure; HttpOnly`;
+                    setSuccessMessage("OTP validated successfully! Redirecting...");
+                    setTimeout(() => {
+                        navigate("/");
+                    }, 2000);
+                }
+            } catch (error) {
+                setErrors({ general: "Invalid OTP. Please try again." });
             }
-        } catch (error) {
-            console.error(error);
         }
     };
 
@@ -41,7 +63,7 @@ export default function Otp(){
                         <div key={index} className="flex-grow w-full px-2 xs:w-1/6">
                             <InputField
                                 handleChange={handleChange}
-                                value={otpState[field.id]}
+                                value={formState[field.id]}
                                 labelText={field.labelText}
                                 labelFor={field.labelFor}
                                 id={field.id}
@@ -54,6 +76,8 @@ export default function Otp(){
                     ))                   
                 }
             </div>
+            {errors.general && <ErrorMessage message={errors.general} />}
+            {successMessage && <SuccessMessage message={successMessage} />}
             <FormAction text="Send"/>
         </form>
     )
