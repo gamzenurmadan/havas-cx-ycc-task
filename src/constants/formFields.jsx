@@ -55,7 +55,7 @@ const OtpFields=[
         labelFor:"otp",
         id:"otp",
         name:"otp",
-        type:Number,
+        type:"text",
         isRequired:true,
         placeholder:""
     }

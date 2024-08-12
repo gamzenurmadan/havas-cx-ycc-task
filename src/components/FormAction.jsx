@@ -22,7 +22,6 @@ export default function FormAction({
 }
 
 FormAction.propTypes = {
-    handleSubmit:PropTypes.any,
     type:PropTypes.string,
     action:PropTypes.string,
     text:PropTypes.string

@@ -13,7 +13,7 @@ export default function InputField(
         type,
         isRequired=false,
         placeholder,
-        customClass
+        customClass = ""
     }
 ){
     return (
@@ -36,7 +36,7 @@ export default function InputField(
 }
 
 InputField.propTypes = {
-    handleChange:PropTypes.any,
+    handleChange:PropTypes.func.isRequired,
     value:PropTypes.string,
     labelText:PropTypes.string,
     labelFor:PropTypes.string,
@@ -45,5 +45,5 @@ InputField.propTypes = {
     type: PropTypes.string,
     isRequired: PropTypes.bool,
     placeholder: PropTypes.string,
-    customClass: PropTypes.any
+    customClass: PropTypes.string
 }

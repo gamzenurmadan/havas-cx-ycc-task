@@ -25,3 +25,16 @@ export const setCookie = (name, value, days) => {
     }
     document.cookie = name + "=" + (value || "") + expires + "; path=/; Secure; HttpOnly";
 };
+
+export const getCookie = (name) => {
+    const value = `; ${document.cookie}`;
+    const parts = value.split(`; ${name}=`);
+    if (parts.length === 2) return parts.pop().split(';').shift();
+    return null;
+};
+
+export const clearSession = () => {
+    document.cookie = "token=; Max-Age=0; path=/; Secure; HttpOnly";
+    sessionStorage.removeItem("email");
+    sessionStorage.removeItem("password");
+};

@@ -2,7 +2,7 @@ import { OtpFields } from "../constants/formFields";
 import FormAction from "./FormAction";
 import InputField from "./InputField";
 import { useNavigate } from 'react-router-dom';
-import { authLoginUser } from "../api/authApi";
+import { authLoginUser, setCookie } from "../api/authApi";
 import useFormHandler from "../hooks/useFormHandler";
 import ErrorMessage from "./ErrorMessage";
 import SuccessMessage from "./SuccessMessage";
@@ -34,16 +34,16 @@ export default function Otp(){
     } = useFormHandler(fieldsState, validate);
 
     const navigate = useNavigate();
-    const email = localStorage.getItem("email");
-    const password = localStorage.getItem("password");
+    const email = sessionStorage.getItem("email");
+    const password = sessionStorage.getItem("password");
 
     const handleSubmit = async (e) => {
         e.preventDefault();
         if (handleValidation()) {
             try {
-                const response = await authLoginUser(email, password, formState);
+                const response = await authLoginUser(email, password, formState.otp);
                 if (response.data && response.data.token) {
-                    document.cookie = `token=${response.data.token}; path=/; Secure; HttpOnly`;
+                    setCookie("token", response.data.token, 7);
                     setSuccessMessage("OTP validated successfully! Redirecting...");
                     setTimeout(() => {
                         navigate("/");

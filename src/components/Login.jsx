@@ -43,8 +43,8 @@ export default function Login(){
         try {
             const response = await loginUser(formState.email, formState.password);
             setCookie("token", response.data.token, 7);
-            localStorage.setItem("email", formState.email);
-            localStorage.setItem("password", formState.password);
+            sessionStorage.setItem("email", formState.email);
+            sessionStorage.setItem("password", formState.password);
             setSuccessMessage("Login successful! Redirecting...");
             setTimeout(() => {
                 navigate("/otp-validate");
