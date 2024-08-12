@@ -1,29 +1,55 @@
-import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { signupFields } from "../constants/formFields";
 import FormAction from "./FormAction";
 import InputField from "./InputField";
-import { registerUser } from "../api/authApi";
+import { registerUser, setCookie } from "../api/authApi";
+import useFormHandler from "../hooks/useFormHandler";
+import ErrorMessage from "./ErrorMessage";
+import SuccessMessage from "./SuccessMessage";
 
 const fields = signupFields;
 let fieldsState = {};
 
 fields.forEach(field => fieldsState[field.id]='');
 
-export default function Signup () {
-    const [signupState, setSignupState] = useState(fieldsState);
+const validate = (state) => {
+    const errors = {};
+    if (!state.username) errors.username = "Username is required.";
+    if (!state.email) errors.email = "Email is required.";
+    if (!state.password) errors.password = "Password is required.";
+    return errors;
+}
 
-    const handleChange = (e) => setSignupState({...signupState, [e.target.id]:e.target.value});
+export default function Signup () {
+    const {
+        formState,
+        handleChange,
+        handleValidation,
+        errors,
+        setErrors,
+        successMessage,
+        setSuccessMessage
+    } = useFormHandler(fieldsState, validate);
+
+    const navigate = useNavigate();
 
     const handleSubmit=(e)=>{
         e.preventDefault();
-        createAccount();
-    }
+        if (handleValidation()){
+            createAccount();
+        }
+    };
 
     const createAccount= async () => {
         try{
-            await registerUser(signupState.email, signupState.userName, signupState.password)
+            const response = await registerUser(formState.email, formState.userName, formState.password)
+            setCookie("token", response.data.token, 7);
+            setSuccessMessage("Registration successful! Redirecting to Log in Page");
+            setTimeout(() => {
+             navigate("/login");
+            }, 2000);
         }catch (error){
-            console.error(error)
+            setErrors({ general: "Registration failed. Please try again." });
         }
     }
 
@@ -35,7 +61,7 @@ export default function Signup () {
                         <InputField 
                             key={field.id}
                             handleChange={handleChange}
-                            value={signupState[field.id]}
+                            value={formState[field.id]}
                             labelText={field.labelText}
                             labelFor={field.labelFor}
                             id={field.id}
@@ -48,6 +74,8 @@ export default function Signup () {
                 }
                 <FormAction text="Signup"/>
             </div>
+            {errors.general && <ErrorMessage message={errors.general} />}
+            {successMessage && <SuccessMessage message={successMessage} />}
         </form>
     )
 }

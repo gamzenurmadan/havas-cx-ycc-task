@@ -61,9 +61,9 @@ const signupFields=[
 const OtpFields=[
     {
         labelText:"OTP Number",
-        labelFor:"otp-number",
-        id:"otp-number",
-        name:"otp-number",
+        labelFor:"otp",
+        id:"otp",
+        name:"otp",
         type:Number,
         isRequired:true,
         placeholder:""
