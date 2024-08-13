@@ -1,7 +1,6 @@
 import { createContext, useState, useEffect, useContext } from "react";
 import { checkSession, clearSession } from "../api/authApi";
 import PropTypes from "prop-types";
-import { redirect } from "react-router-dom";
 
 const AuthContext = createContext();
 
@@ -17,11 +16,9 @@ export const AuthProvider = ({ children }) => {
                     setIsAuthenticated(true);
                 } else {
                     clearSession();
-                    redirect("/login");
                 }
             } catch (error) {
                 clearSession();
-                redirect("/login");
             } finally {
                 setLoading(false);
             }
@@ -38,7 +35,7 @@ export const AuthProvider = ({ children }) => {
 };
 
 AuthProvider.propTypes = {
-    children : PropTypes.node.isRequired
-}
+    children: PropTypes.node.isRequired
+};
 
 export const useAuth = () => useContext(AuthContext);

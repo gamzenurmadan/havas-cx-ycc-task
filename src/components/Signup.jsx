@@ -7,7 +7,7 @@ import useFormHandler from "../hooks/useFormHandler";
 import ErrorMessage from "./ErrorMessage";
 import SuccessMessage from "./SuccessMessage";
 
-const fields = signupFields;
+const fields = signupFields; //TODO check authorization from api
 let fieldsState = {};
 
 fields.forEach(field => fieldsState[field.id]='');
@@ -35,14 +35,16 @@ export default function Signup () {
 
     const handleSubmit=(e)=>{
         e.preventDefault();
-        if (handleValidation()){
+        if (handleValidation){
             createAccount();
         }
     };
 
     const createAccount= async () => {
         try{
+            console.log("Creating account with state:", formState);
             const response = await registerUser(formState.email, formState.userName, formState.password)
+            console.log("API response:", response);
             setCookie("token", response.data.token, 7);
             setSuccessMessage("Registration successful! Redirecting to Log in Page");
             setTimeout(() => {
