@@ -7,7 +7,7 @@ import useFormHandler from "../hooks/useFormHandler";
 import ErrorMessage from "./ErrorMessage";
 import SuccessMessage from "./SuccessMessage";
 
-const fields = signupFields; //TODO check authorization from api
+const fields = signupFields;
 let fieldsState = {};
 
 fields.forEach(field => fieldsState[field.id]='');
