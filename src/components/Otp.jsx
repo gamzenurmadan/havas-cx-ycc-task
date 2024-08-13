@@ -47,7 +47,7 @@ export default function Otp(){
                     setSuccessMessage("OTP validated successfully! Redirecting...");
                     setTimeout(() => {
                         navigate("/");
-                    }, 2000);
+                    }, 1000);
                 }
             } catch (error) {
                 setErrors({ general: "Invalid OTP. Please try again." });

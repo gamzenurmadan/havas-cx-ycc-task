@@ -48,7 +48,7 @@ export default function Login(){
             setSuccessMessage("Login successful! Redirecting...");
             setTimeout(() => {
                 navigate("/otp-validate");
-            }, 2000);
+            }, 1000);
         }catch (error){
             setErrors({ general: "Invalid email or password." });
         }

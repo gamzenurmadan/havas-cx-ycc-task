@@ -49,7 +49,7 @@ export default function Signup () {
             setSuccessMessage("Registration successful! Redirecting to Log in Page");
             setTimeout(() => {
              navigate("/login");
-            }, 2000);
+            }, 1000);
         }catch (error){
             setErrors({ general: "Registration failed. Please try again." });
         }
