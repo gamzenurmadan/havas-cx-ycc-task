@@ -6,8 +6,9 @@ export default function Header({heading, paragraph, linkName, linkUrl='#'}){
     <div className='mb-10'>
         <div className='flex justify-center'>
             <img 
-            className='h-16 w-16'
+            className='h-40 w-40'
             src= 'src\assets\default-press.jpg'
+            loading='lazy' //for performance purpose
             />
         </div>
         <h2 className='mt-6 text-center text-3xl font-extrabold text-gray-900'> {heading} </h2>
