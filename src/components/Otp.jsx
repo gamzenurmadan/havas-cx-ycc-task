@@ -41,7 +41,7 @@ export default function Otp(){
         e.preventDefault();
         if (handleValidation()) {
             try {
-                const response = await authLoginUser(email, password, formState.otp); //TODO check api for authLoginUser
+                const response = await authLoginUser(email, password, formState.otp);
                 if (response.data && response.data.token) {
                     setCookie("token", response.data.token, 7);
                     setSuccessMessage("OTP validated successfully! Redirecting...");
